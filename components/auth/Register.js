@@ -1,12 +1,13 @@
-import React, { memo } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import styles from '@styles/register.module.scss'
 import InputField from '@components/InputField'
 import { AccountCircle, LocationOn, PhoneIphone } from '@material-ui/icons'
 import { Paper, Avatar } from '@material-ui/core'
 import ButtonProgress from '@components/ButtonProgress'
 import { Field, Form } from 'react-final-form'
+import CustomizedSnackbar from '@components/CustomizedSnackbar'
 
-const Register = ({ onRegister, loading }) => {
+const Register = ({ onRegister, loading, err }) => {
   const initialValue = {
     password: '',
     username: '',
@@ -27,6 +28,16 @@ const Register = ({ onRegister, loading }) => {
     })
   }
 
+  const [open, setOpen] = useState(false)
+
+  const handleCloseCallback = useCallback(() => {
+    setOpen(false)
+  })
+
+  useEffect(() => {
+    setOpen(true)
+  }, [err])
+
   const required = (value) => (value ? undefined : 'Required')
   const mustBeNumber = (value) =>
     isNaN(value) ? 'Must be a number' : undefined
@@ -34,6 +45,11 @@ const Register = ({ onRegister, loading }) => {
     !isNaN(value) || value.length >= min
       ? undefined
       : `Should be greater than ${min}`
+
+  const validateEmail = (value) => {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return re.test(String(value).toLowerCase()) ? undefined : 'Email is invalid'
+  }
   const composeValidators = (...validators) => (value) =>
     validators.reduce(
       (error, validator) => error || validator(value),
@@ -42,6 +58,14 @@ const Register = ({ onRegister, loading }) => {
 
   return (
     <Paper elevation={3} className={styles.register_container}>
+      {err && (
+        <CustomizedSnackbar
+          msg={err}
+          open={open}
+          handleOpen={handleCloseCallback}
+          tag="error"
+        />
+      )}
       <div className={styles.register_left}>
         <Avatar
           className={styles.avatar}
@@ -87,10 +111,14 @@ const Register = ({ onRegister, loading }) => {
                     onChange={input.onChange}
                     value={input.value}
                     meta={meta}
+                    type="password"
                   />
                 )}
               </Field>
-              <Field name="email" validate={required}>
+              <Field
+                name="email"
+                validate={composeValidators(required, validateEmail)}
+              >
                 {({ input, meta }) => (
                   <InputField
                     name={input.name}
@@ -100,7 +128,14 @@ const Register = ({ onRegister, loading }) => {
                   />
                 )}
               </Field>
-              <Field name="phone" validate={required}>
+              <Field
+                name="phone"
+                validate={composeValidators(
+                  required,
+                  minValue(10),
+                  mustBeNumber,
+                )}
+              >
                 {({ input, meta }) => (
                   <InputField
                     name={input.name}
@@ -122,7 +157,7 @@ const Register = ({ onRegister, loading }) => {
                   />
                 )}
               </Field>
-              <ButtonProgress text="login" loading={loading} />
+              <ButtonProgress text="Register" loading={loading} />
             </form>
           )}
         />

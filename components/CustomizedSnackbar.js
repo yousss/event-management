@@ -1,12 +1,7 @@
 import { Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
 
-export default function CustomizedSnackbar({
-  handleOpen,
-  open,
-  msg,
-  tag = 'success',
-}) {
+const CustomizedSnackbar = ({ handleOpen, open, msg, tag = 'success' }) => {
   const tags = {
     success: 'success',
     error: 'error',
@@ -24,7 +19,7 @@ export default function CustomizedSnackbar({
       return
     }
 
-    handleOpen(false)
+    handleOpen()
   }
 
   const Alert = (props) => {
@@ -44,3 +39,5 @@ export default function CustomizedSnackbar({
     </Snackbar>
   )
 }
+
+export default CustomizedSnackbar

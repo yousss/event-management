@@ -1,10 +1,10 @@
-import Register from '@components/auth/Register'
+import RegisterComponent from '@components/auth/Register'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import _ from 'lodash'
 import { BASE_URL_PRO } from 'config'
 
-const register = () => {
+const Authregister = () => {
   const router = useRouter()
   const [state, setState] = useState({ data: null, err: null, loading: false })
 
@@ -20,7 +20,7 @@ const register = () => {
   const register = async () => {
     if (Object.entries(userInfo).length === 0) return
 
-    setState((state) => ({ ...state, loading: true }))
+    setState({ ...state, loading: true })
     const { username, password, email, full_name, address, phone } = userInfo
 
     const requestBody = {
@@ -51,14 +51,17 @@ const register = () => {
           'Content-Type': 'application/json',
         },
       })
-      const { data } = await res.json()
+      const {
+        data: { createUser },
+        errors,
+      } = await res.json()
+      const err = errors && errors[0].message
 
-      setState({ ...state, data: data })
-      if (data) router.push('/login')
+      setState({ ...state, data: createUser, err: err, loading: false })
+      if (createUser) router.push('/login')
     } catch (error) {
-      setState({ ...state, err: error })
-    } finally {
-      setState({ ...state, loading: false })
+      const err = error && errors[0].message
+      setState({ ...state, err: err, loading: false })
     }
   }
 
@@ -71,11 +74,14 @@ const register = () => {
       setUserInfo({ username, password, email, address, phone, full_name })
     },
   )
+  const { loading, err } = state
+
   return (
     <>
-      <Register loading={false} onRegister={onRegister} />
+      <RegisterComponent loading={loading} err={err} onRegister={onRegister} />
     </>
   )
 }
 
-export default register
+Authregister.layout = 'auth'
+export default Authregister
