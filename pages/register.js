@@ -18,11 +18,9 @@ const Authregister = () => {
   })
 
   const register = async () => {
-    if (Object.entries(userInfo).length === 0) return
-
-    setState({ ...state, loading: true })
     const { username, password, email, full_name, address, phone } = userInfo
-
+    if (!username) return
+    setState({ ...state, loading: true })
     const requestBody = {
       query: `
       mutation {
@@ -66,7 +64,7 @@ const Authregister = () => {
   }
 
   useEffect(() => {
-    register()
+    userInfo && register()
   }, [userInfo])
 
   const onRegister = useCallback(
