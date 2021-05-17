@@ -1,0 +1,28 @@
+.login_wrapper {
+  display: flex;
+  align-items: center;
+  flex-flow: column wrap;
+  max-width: 400px;
+  width: 100%;
+  padding: 15px;
+
+  .login_label {
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+    padding: 20px 0px;
+    text-transform: uppercase;
+  }
+
+  .noAccount {
+    margin-top: 10px;
+    a {
+      color: sandybrown;
+      &:hover {
+        text-decoration: yellowgreen;
+        text-transform: uppercase;
+      }
+    }
+  }
+}

@@ -1,65 +1,96 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import styles from '@styles/home.module.scss'
+import Calendar from 'react-calendar'
+import React, { useState, useEffect } from 'react'
+import 'react-calendar/dist/Calendar.css'
+import { withAuthSync } from '@context/auth'
+import TransitionsModal from '@components/TransitionsModal'
+import { Card, CircularProgress } from '@material-ui/core'
+import cookie from 'js-cookie'
+import { BASE_URL_PRO } from 'config'
 
-export default function Home() {
+const Home = function Home(props) {
+  const [open, setOpen] = React.useState(false)
+  const [value, setValue] = useState(new Date())
+  const [loading, setLoading] = useState(false)
+
+  const handleClick = (e) => {
+    setOpen(true)
+    setValue(e)
+  }
+  const openHandler = (e) => {
+    setOpen(false)
+  }
+  const activeDate = ({ active, date, view }) => {
+    return date.getDate() === 8
+  }
+  const titleAactive = ({ active, date, view }) => {
+    return view === 'month' && date.getDate() === 10 ? (
+      <div className={styles.booked}>Meeting</div>
+    ) : null
+  }
+
+  useEffect(async () => {
+    setLoading(true)
+    const requestBody = {
+      query: `
+      query {
+        events {
+        _id
+        title
+        description
+        date
+        price
+        creator {
+          username
+        }
+      }
+    }
+    `,
+    }
+    try {
+      const res = await fetch(BASE_URL_PRO, {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + cookie.get('token'),
+        },
+      })
+      const { data } = await res.json()
+      console.log(data)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+    return () => {}
+  }, [])
+
   return (
-    <div className={styles.container}>
+    <div className={styles.home}>
       <Head>
-        <title>Create Next App</title>
+        <title>Home</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+      <Card>
+        <Calendar
+          className={styles.react_calendar}
+          onChange={handleClick}
+          value={value}
+          tileContent={titleAactive}
+          tileDisabled={activeDate}
+        ></Calendar>
+      </Card>
+      {loading && (
+        <CircularProgress
+          style={{ position: 'absolute', top: '50%', left: '50%' }}
+          color="secondary"
+        />
+      )}
+      <TransitionsModal openHandler={openHandler} open={open} newDate={value} />
     </div>
   )
 }
+
+export default withAuthSync(Home)

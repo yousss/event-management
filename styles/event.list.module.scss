@@ -1,0 +1,19 @@
+.event_list_wrapper {
+  max-width: 600px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+
+  button {
+    background: linear-gradient(45deg, #874752 30%, #2c568a 90%);
+    color: rgb(228, 219, 213);
+    outline: none;
+    font-size: 0.8rem;
+
+    &:hover {
+      background: linear-gradient(45deg, #2c568a 30%, #874752 90%);
+      font-size: 0.8rem;
+    }
+  }
+}

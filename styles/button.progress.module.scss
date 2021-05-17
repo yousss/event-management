@@ -1,0 +1,22 @@
+.buttonProgress {
+  color: green;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -12px;
+  margin-left: -12px;
+}
+.default_button_style {
+  padding: 13px 52px;
+  margin: 10px;
+}
+.wrapper {
+  margin: 2px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+
+  .btnColor {
+    background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
+  }
+}

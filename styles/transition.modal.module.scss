@@ -1,0 +1,24 @@
+.modal_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 600px;
+  margin: auto;
+
+  .paper {
+    display: flex;
+    width: 100%;
+    text-align: center;
+
+    .card_wrapper {
+      padding: 10px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .text_field {
+      width: 100%;
+    }
+  }
+}
