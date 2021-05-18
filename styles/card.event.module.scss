@@ -23,13 +23,15 @@
     display: flex;
     flex-flow: column wrap;
     justify-content: space-between;
-    button {
-      background: linear-gradient(45deg, #874752 30%, #2c568a 90%);
-      color: rgb(228, 219, 213);
+
+    .button {
+      background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
+      color: #fff;
       outline: none;
+      font-size: 0.8rem;
 
       &:hover {
-        background: linear-gradient(45deg, #2c568a 30%, #874752 90%);
+        background: linear-gradient(45deg, #ff8e53 30%, #fe6b8b 90%) !important;
         font-size: 0.8rem;
       }
     }

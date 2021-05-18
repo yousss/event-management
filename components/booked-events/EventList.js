@@ -8,22 +8,33 @@ import { Pagination } from '@material-ui/lab'
 
 const EventList = () => {
   const [open, setOpen] = useState(false)
+  const [page, setPage] = useState(1)
+  const [rowPerPage, setRowPerPage] = useState(10)
 
   const openModal = useCallback(() => {
     setOpen(false)
   })
 
+  const handlePaging = (e, page) => {
+    setPage(page)
+  }
+
   const requestBody = {
     query: `
     query {
-      events {
-        _id
-        title
-        description
-        date
-        price
-        creator {
-          username
+      events(rowPerPage:${rowPerPage}, page:${page}) {
+        events {
+          _id
+          title
+          description
+          date
+          price
+          creator {
+            username
+          }
+        },
+        pageInfo {
+          rowCount
         }
       }
     }
@@ -35,11 +46,14 @@ const EventList = () => {
   useEffect(() => {
     doFetch({ isAuth: true })
     return () => {}
-  }, [])
+  }, [page])
 
   useEffect(() => {
-    !open && response?.events && doFetch({ isAuth: true })
+    !open && response?.events?.events && doFetch({ isAuth: true })
   }, [open])
+
+  const pageSize = response?.events?.pageInfo?.rowCount
+  const size = Math.ceil(pageSize / rowPerPage)
 
   if (isLoading) {
     return (
@@ -52,13 +66,21 @@ const EventList = () => {
 
   return (
     <Typography component="div" className={styles.event_list_wrapper}>
-      <Typography component="div">
-        <Button onClick={() => setOpen(true)}>Create Event</Button>
+      <Typography className={styles.event_list_create_btn} component="div">
+        <Button className={styles.button} onClick={() => setOpen(true)}>
+          Create Event
+        </Button>
       </Typography>
-      {response?.events.map((event) => {
+      {response?.events?.events.map((event) => {
         return <EventItem key={event._id} myEvent={event} />
       })}
-      <Pagination className={styles.pagination_wrapper} count={10} />
+      <Pagination
+        onChange={handlePaging}
+        page={page}
+        className={styles.pagination_wrapper}
+        count={size}
+        color="secondary"
+      />
       {open && <CreateEventModal open={open} setOpen={openModal} />}
     </Typography>
   )

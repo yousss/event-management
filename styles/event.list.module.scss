@@ -5,18 +5,26 @@
   justify-content: flex-end;
   flex-direction: column;
 
-  .pagination_wrapper {
-    margin: 10px 0px;
+  .event_list_create_btn {
+    text-align: right;
+    margin-bottom: 10px;
   }
 
-  button {
-    background: linear-gradient(45deg, #874752 30%, #2c568a 90%);
-    color: rgb(228, 219, 213);
+  .pagination_wrapper {
+    margin: 10px 0px;
+    .Mui-selected {
+      background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
+    }
+  }
+
+  .button {
+    background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
+    color: #fff;
     outline: none;
     font-size: 0.8rem;
 
     &:hover {
-      background: linear-gradient(45deg, #2c568a 30%, #874752 90%);
+      background: linear-gradient(45deg, #ff8e53 30%, #fe6b8b 90%) !important;
       font-size: 0.8rem;
     }
   }

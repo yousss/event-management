@@ -33,8 +33,14 @@ const Event = ({ myEvent }) => {
         </Typography>
       </CardContent>
       <CardActions className={styles.btn_wrapper}>
-        <Button size="small">Cancel </Button>
-        <Button onClick={() => setOpen(true)} size="small">
+        <Button className={styles.button} size="small">
+          Cancel
+        </Button>
+        <Button
+          className={styles.button}
+          onClick={() => setOpen(true)}
+          size="small"
+        >
           Detail
         </Button>
       </CardActions>
