@@ -16,7 +16,6 @@ const useFetch = (url) => {
     if (!isLoading) {
       return
     }
-
     const headers = {
       'Content-Type': 'application/json',
     }
@@ -38,8 +37,9 @@ const useFetch = (url) => {
       } catch (err) {
         const data = err.response ? err.response.data : 'Server error'
         setError(data)
+      } finally {
+        setIsLoading(false)
       }
-      setIsLoading(false)
     }
     fetchData()
   }, [isLoading, options, url])

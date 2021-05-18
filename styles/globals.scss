@@ -14,7 +14,9 @@ a {
 * {
   box-sizing: border-box;
 }
-
+form {
+  width: 100%;
+}
 .MuiOutlinedInput-input {
   padding: 16.5px 14px !important;
 }

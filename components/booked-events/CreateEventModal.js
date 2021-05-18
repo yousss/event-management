@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, memo } from 'react'
 import Button from '@material-ui/core/Button'
 import styles from '@styles/event.modal.module.scss'
 import InputField from '@components/InputField'
 import { Form, Field } from 'react-final-form'
 import InputDateField from '@components/InputDateField'
-import { CircularProgress, Modal } from '@material-ui/core'
+import { Modal } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import useFetch from '@hooks/useFetch'
 
@@ -33,10 +33,14 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
 }))
-const CreateEventModal = ({ event, setOpen, open }) => {
+const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
   const [data, setData] = useState({})
   let { title, description, price, date } = data && data
   date = date ? new Date(date).toISOString() : new Date().toISOString()
+  const handleButtonClick = (props) => {
+    setData(props)
+  }
+
   const requestBody = {
     query: `
       mutation {
@@ -59,10 +63,10 @@ const CreateEventModal = ({ event, setOpen, open }) => {
       }
       `,
   }
-  const [{ response, error, isLoading }, doFetch] = useFetch(requestBody)
 
   const classes = useStyles()
   const [modalStyle] = React.useState(getModalStyle)
+  const [{ response, error, isLoading }, doFetch] = useFetch(requestBody)
 
   let initialValues = {
     title: '',
@@ -72,19 +76,16 @@ const CreateEventModal = ({ event, setOpen, open }) => {
   }
 
   useEffect(() => {
-    response && handleClose()
+    response && handleClose('save')
   }, [response])
 
   useEffect(() => {
     data && Object.entries(data).length > 0 && doFetch({ isAuth: true })
   }, [data])
 
-  const handleClose = () => {
+  const handleClose = (val) => {
+    setIsCancel(val)
     setOpen()
-  }
-
-  const handleButtonClick = (props) => {
-    setData(props)
   }
 
   const required = (value) => (value ? undefined : 'Required')
@@ -101,7 +102,7 @@ const CreateEventModal = ({ event, setOpen, open }) => {
     )
 
   return (
-    <Modal open={open} onClose={handleClose} className={styles.dialog_wrapper}>
+    <Modal disableBackdropClick open={open} className={styles.dialog_wrapper}>
       <div style={modalStyle} className={classes.paper}>
         <div className={styles.title} id="alert-dialog-title">
           {data?._id ? 'UPDATE EVENT' : 'CREATE EVENT'}
@@ -110,8 +111,12 @@ const CreateEventModal = ({ event, setOpen, open }) => {
           <Form
             onSubmit={handleButtonClick}
             initialValues={initialValues}
-            render={({ handleSubmit }) => (
-              <form onSubmit={handleSubmit}>
+            render={({ handleSubmit, reset }) => (
+              <form
+                onSubmit={(event) => {
+                  handleSubmit(event)
+                }}
+              >
                 <Field
                   name="title"
                   validate={composeValidators(required, minValue(3))}
@@ -167,8 +172,8 @@ const CreateEventModal = ({ event, setOpen, open }) => {
                   <Button type="submit" color="primary">
                     Save
                   </Button>
-                  <Button onClick={handleClose} color="primary">
-                    Close
+                  <Button onClick={() => handleClose('cancel')} color="primary">
+                    Cancel
                   </Button>
                 </div>
               </form>
@@ -180,4 +185,4 @@ const CreateEventModal = ({ event, setOpen, open }) => {
   )
 }
 
-export default CreateEventModal
+export default memo(CreateEventModal)

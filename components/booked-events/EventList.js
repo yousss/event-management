@@ -8,6 +8,10 @@ import { Pagination } from '@material-ui/lab'
 
 const EventList = () => {
   const [open, setOpen] = useState(false)
+  const [{ cancel, save }, setIsCancel] = useState({
+    cancel: false,
+    save: false,
+  })
   const [page, setPage] = useState(1)
   const [rowPerPage, setRowPerPage] = useState(10)
 
@@ -18,6 +22,17 @@ const EventList = () => {
   const handlePaging = (e, page) => {
     setPage(page)
   }
+  const setIsCancelCallback = useCallback((val) => {
+    if (val == 'cancel') {
+      setIsCancel((preve) => {
+        return { ...preve, cancel: true }
+      })
+    } else {
+      setIsCancel((preve) => {
+        return { ...preve, save: true }
+      })
+    }
+  })
 
   const requestBody = {
     query: `
@@ -42,15 +57,15 @@ const EventList = () => {
   }
 
   const [{ response, error, isLoading }, doFetch] = useFetch(requestBody)
-
+  console.log('EventList', open)
   useEffect(() => {
     doFetch({ isAuth: true })
     return () => {}
   }, [page])
 
   useEffect(() => {
-    !open && response?.events?.events && doFetch({ isAuth: true })
-  }, [open])
+    save && response?.events?.events && doFetch({ isAuth: true })
+  }, [save])
 
   const pageSize = response?.events?.pageInfo?.rowCount
   const size = Math.ceil(pageSize / rowPerPage)
@@ -81,7 +96,13 @@ const EventList = () => {
         count={size}
         color="secondary"
       />
-      {open && <CreateEventModal open={open} setOpen={openModal} />}
+      {open && (
+        <CreateEventModal
+          open={open}
+          setOpen={openModal}
+          setIsCancel={setIsCancelCallback}
+        />
+      )}
     </Typography>
   )
 }

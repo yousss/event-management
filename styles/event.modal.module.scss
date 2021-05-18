@@ -7,6 +7,12 @@
   .btn_wrapper {
     display: flex;
     justify-content: flex-end;
+    margin-top: 10px;
+
+    button {
+      border: 0.7px solid coral;
+      margin: 0px 5px;
+    }
   }
 
   .title {
