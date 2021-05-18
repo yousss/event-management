@@ -6,6 +6,7 @@ import ButtonProgress from './ButtonProgress'
 import { BASE_URL_PRO } from 'config'
 import cookie from 'js-cookie'
 import CustomizedSnackbar from './CustomizedSnackbar'
+import { AccountCircle } from '@material-ui/icons'
 
 export default function TransitionsModal({ open, openHandler, newDate = '' }) {
   const [loading, setLoading] = React.useState(false)
@@ -102,9 +103,9 @@ export default function TransitionsModal({ open, openHandler, newDate = '' }) {
               <InputField
                 name="title"
                 type="text"
-                placeholder="title"
                 onChange={onChange}
-                values={values}
+                value={values}
+                icon={<AccountCircle />}
               />
               <InputField
                 name="description"

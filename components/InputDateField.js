@@ -5,7 +5,7 @@ import styles from '@styles/input.field.module.scss'
 
 const InputDateField = ({ type, name, icon, onChange, value, meta }) => {
   const handleChange = (event) => {
-    onChange(event.target.value)
+    onChange(event)
   }
 
   return (
@@ -20,6 +20,7 @@ const InputDateField = ({ type, name, icon, onChange, value, meta }) => {
         format="MM/dd/yyyy"
         value={value}
         onChange={handleChange}
+        fullWidth
         InputAdornmentProps={{ position: 'end' }}
       />
       {meta.error && meta.touched && (

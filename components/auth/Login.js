@@ -5,6 +5,7 @@ import ButtonProgress from '@components/ButtonProgress'
 import InputField from '@components/InputField'
 import Link from 'next/link'
 import { Form, Field } from 'react-final-form'
+import { Person } from '@material-ui/icons'
 
 function Login({ onLogin, loading }) {
   const initialValues = { password: '', username: '' }
@@ -48,6 +49,7 @@ function Login({ onLogin, loading }) {
                   type="text"
                   onChange={input.onChange}
                   meta={meta}
+                  icon={<Person />}
                 />
               )}
             </Field>

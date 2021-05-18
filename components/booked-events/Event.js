@@ -33,9 +33,9 @@ const Event = ({ myEvent }) => {
         </Typography>
       </CardContent>
       <CardActions className={styles.btn_wrapper}>
-        <Button size="small">Cancel Event</Button>
+        <Button size="small">Cancel </Button>
         <Button onClick={() => setOpen(true)} size="small">
-          More Detail
+          Detail
         </Button>
       </CardActions>
       <CustomDialog event={myEvent} open={open} setOpen={handleClose} />

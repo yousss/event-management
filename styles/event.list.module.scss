@@ -5,6 +5,10 @@
   justify-content: flex-end;
   flex-direction: column;
 
+  .pagination_wrapper {
+    margin: 10px 0px;
+  }
+
   button {
     background: linear-gradient(45deg, #874752 30%, #2c568a 90%);
     color: rgb(228, 219, 213);

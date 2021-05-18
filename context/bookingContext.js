@@ -20,7 +20,6 @@ export default function BookingEventProvider(props) {
   const [loading, setLoading] = useState(false)
   const { children } = props
 
-  console.log(events, setBookedEvents)
   function addBookingEventHandler(eventId) {
     const eventBooked = events.map((event) => event.id === eventId)
     if (!eventBooked) {

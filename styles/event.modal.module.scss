@@ -1,4 +1,15 @@
-.btn_wrapper {
-  display: flex;
-  justify-content: flex-end;
+.dialog_wrapper {
+  max-width: 700px;
+  width: 100%;
+  margin: auto;
+  background-color: transparent;
+
+  .btn_wrapper {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .title {
+    width: 100%;
+  }
 }

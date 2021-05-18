@@ -1,27 +1,90 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import styles from '@styles/event.modal.module.scss'
 import InputField from '@components/InputField'
 import { Form, Field } from 'react-final-form'
-import { useCreateEvent } from '@hooks/events'
 import InputDateField from '@components/InputDateField'
+import { CircularProgress, Modal } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import useFetch from '@hooks/useFetch'
 
+function rand() {
+  return Math.round(Math.random() * 20) - 10
+}
+
+function getModalStyle() {
+  const top = 50 + rand()
+  const left = 50 + rand()
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  }
+}
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: 'absolute',
+    width: 600,
+    backgroundColor: theme.palette.background.paper,
+    borderRadius: 10,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}))
 const CreateEventModal = ({ event, setOpen, open }) => {
-  const [eventState, setEventState] = useState(event)
-  const initialValues = { title: '', description: '', date: '', price: '' }
-  const { loading, events, error } = useCreateEvent(eventState | initialValues)
+  const [data, setData] = useState({})
+  let { title, description, price, date } = data && data
+  date = date ? new Date(date).toISOString() : new Date().toISOString()
+  const requestBody = {
+    query: `
+      mutation {
+      createEvent (
+        eventInput:
+            { title:"${title}",
+            description:"${description}",
+            price:${Number(price)},
+            date: "${date}"
+          }) {
+          _id
+          title
+          description
+          creator {
+            username
+          }
+          price
+          date
+        }
+      }
+      `,
+  }
+  const [{ response, error, isLoading }, doFetch] = useFetch(requestBody)
+
+  const classes = useStyles()
+  const [modalStyle] = React.useState(getModalStyle)
+
+  let initialValues = {
+    title: '',
+    description: '',
+    date: '',
+    price: '',
+  }
+
+  useEffect(() => {
+    response && handleClose()
+  }, [response])
+
+  useEffect(() => {
+    data && Object.entries(data).length > 0 && doFetch({ isAuth: true })
+  }, [data])
+
   const handleClose = () => {
     setOpen()
   }
 
-  const { _id } = eventState
-
   const handleButtonClick = (props) => {
-    setEventState(props)
+    setData(props)
   }
 
   const required = (value) => (value ? undefined : 'Required')
@@ -38,21 +101,12 @@ const CreateEventModal = ({ event, setOpen, open }) => {
     )
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-      className={styles.dialog_wrapper}
-    >
-      <DialogTitle className={styles.title} id="alert-dialog-title">
-        {_id ? 'UPDATE EVENT' : 'CREATE EVENT'}
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText
-          className={styles.description}
-          id="alert-dialog-description"
-        >
+    <Modal open={open} onClose={handleClose} className={styles.dialog_wrapper}>
+      <div style={modalStyle} className={classes.paper}>
+        <div className={styles.title} id="alert-dialog-title">
+          {data?._id ? 'UPDATE EVENT' : 'CREATE EVENT'}
+        </div>
+        <div className={styles.description} id="alert-dialog-description">
           <Form
             onSubmit={handleButtonClick}
             initialValues={initialValues}
@@ -83,7 +137,10 @@ const CreateEventModal = ({ event, setOpen, open }) => {
                     />
                   )}
                 </Field>
-                <Field name="price" validate={required}>
+                <Field
+                  name="price"
+                  validate={composeValidators(required, mustBeNumber)}
+                >
                   {({ input, meta }) => (
                     <InputField
                       name={input.name}
@@ -102,6 +159,7 @@ const CreateEventModal = ({ event, setOpen, open }) => {
                       onChange={input.onChange}
                       value={input.value || new Date()}
                       meta={meta}
+                      fullWidth
                     />
                   )}
                 </Field>
@@ -116,9 +174,9 @@ const CreateEventModal = ({ event, setOpen, open }) => {
               </form>
             )}
           />
-        </DialogContentText>
-      </DialogContent>
-    </Dialog>
+        </div>
+      </div>
+    </Modal>
   )
 }
 
