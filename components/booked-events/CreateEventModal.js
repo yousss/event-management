@@ -66,7 +66,7 @@ const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
 
   const classes = useStyles()
   const [modalStyle] = React.useState(getModalStyle)
-  const [{ response, error, isLoading }, doFetch] = useFetch(requestBody)
+  const [{ response, error, isLoading }, doFetch] = useFetch()
 
   let initialValues = {
     title: '',
@@ -80,7 +80,9 @@ const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
   }, [response])
 
   useEffect(() => {
-    data && Object.entries(data).length > 0 && doFetch({ isAuth: true })
+    data &&
+      Object.entries(data).length > 0 &&
+      doFetch({ isAuth: true, url: requestBody })
   }, [data])
 
   const handleClose = (val) => {

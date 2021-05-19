@@ -56,10 +56,10 @@ const EventList = () => {
     `,
   }
 
-  const [{ response, error, isLoading }, doFetch] = useFetch(requestBody)
-  console.log('EventList', open)
+  const [{ response, error, isLoading }, doFetch] = useFetch()
+
   useEffect(() => {
-    doFetch({ isAuth: true })
+    doFetch({ isAuth: true, url: requestBody })
     return () => {}
   }, [page])
 

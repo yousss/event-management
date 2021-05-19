@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import cookie from 'js-cookie'
 import { BASE_URL_PRO } from 'config'
 
-const useFetch = (url) => {
+const useFetch = () => {
   const [response, setResponse] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -26,7 +26,7 @@ const useFetch = (url) => {
 
     let newOption = {
       method: 'POST',
-      body: JSON.stringify(url),
+      body: JSON.stringify(options?.url),
       headers: headers,
     }
     const fetchData = async () => {
@@ -41,8 +41,9 @@ const useFetch = (url) => {
         setIsLoading(false)
       }
     }
-    fetchData()
-  }, [isLoading, options, url])
+
+    options?.url && fetchData()
+  }, [isLoading, options])
 
   return [{ response, error, isLoading }, doFetch]
 }
