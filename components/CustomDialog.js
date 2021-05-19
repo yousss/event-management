@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import styles from '@styles/more.detail.module.scss'
+import moment from '@helpers/moment'
 
 const CustomDialog = ({ event, setOpen, open }) => {
   const handleClose = () => {
@@ -42,7 +43,7 @@ const CustomDialog = ({ event, setOpen, open }) => {
             <span className={styles.price}>Price: $ {price}</span> <br />
             <span>Created By {username}</span>
             <br />
-            <span>Dated On {date}</span>
+            <span>Dated On {moment(date)}</span>
           </DialogContentText>
         </DialogContent>
         <DialogActions>

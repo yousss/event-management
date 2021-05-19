@@ -4,7 +4,6 @@ import Calendar from 'react-calendar'
 import React, { useState, useEffect } from 'react'
 import 'react-calendar/dist/Calendar.css'
 import { withAuthSync } from '@context/auth'
-import TransitionsModal from '@components/TransitionsModal'
 import { Card, CircularProgress } from '@material-ui/core'
 import cookie from 'js-cookie'
 import { BASE_URL_PRO } from 'config'
@@ -88,7 +87,7 @@ const Home = function Home(props) {
           color="secondary"
         />
       )}
-      <TransitionsModal openHandler={openHandler} open={open} newDate={value} />
+      {/* <TransitionsModal openHandler={openHandler} open={open} newDate={value} /> */}
     </div>
   )
 }
