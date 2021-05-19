@@ -4,6 +4,11 @@
 
   .input_field {
     width: 100%;
+    text-transform: capitalize;
+
+    fieldset {
+      border-radius: 10px !important;
+    }
   }
   .error_list {
     color: rgb(238, 30, 30);

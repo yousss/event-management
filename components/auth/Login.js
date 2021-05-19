@@ -31,7 +31,11 @@ function Login({ onLogin, loading }) {
     )
 
   return (
-    <Paper elevation={3} className={styles.login_wrapper}>
+    <Paper
+      style={{ borderRadius: '10px' }}
+      elevation={3}
+      className={styles.login_wrapper}
+    >
       <div className={styles.login_label}>Sign In</div>
       <Form
         onSubmit={handleButtonClick}
