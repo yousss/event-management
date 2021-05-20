@@ -5,6 +5,8 @@ import { Button, CircularProgress, Typography } from '@material-ui/core'
 import styles from '@styles/event.list.module.scss'
 import CreateEventModal from './CreateEventModal'
 import { Pagination } from '@material-ui/lab'
+import { useRecoilValue } from 'recoil'
+import { dispatchToEventListState } from 'store/events'
 
 const EventList = () => {
   const [open, setOpen] = useState(false)
@@ -14,6 +16,7 @@ const EventList = () => {
   })
   const [page, setPage] = useState(1)
   const [rowPerPage, setRowPerPage] = useState(10)
+  const readDispatchingEventState = useRecoilValue(dispatchToEventListState)
 
   const openModal = useCallback(() => {
     setOpen(false)
@@ -66,6 +69,10 @@ const EventList = () => {
   useEffect(() => {
     save && response?.events?.events && doFetch({ isAuth: true })
   }, [save])
+
+  useEffect(() => {
+    readDispatchingEventState?.dispatching && doFetch({ isAuth: true })
+  }, [readDispatchingEventState])
 
   const pageSize = response?.events?.pageInfo?.rowCount
   const size = Math.ceil(pageSize / rowPerPage)

@@ -4,35 +4,22 @@ import styles from '@styles/event.modal.module.scss'
 import InputField from '@components/InputField'
 import { Form, Field } from 'react-final-form'
 import InputDateField from '@components/InputDateField'
-import { Modal } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Dialog, DialogContent, DialogTitle, Modal } from '@material-ui/core'
 import useFetch from '@hooks/useFetch'
+import Paper from '@material-ui/core/Paper'
+import Draggable from 'react-draggable'
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10
+function PaperComponent(props) {
+  return (
+    <Draggable
+      handle="#draggable-dialog-title"
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper style={{ width: '100%', borderRadius: '10px' }} {...props} />
+    </Draggable>
+  )
 }
 
-function getModalStyle() {
-  const top = 50 + rand()
-  const left = 50 + rand()
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  }
-}
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    position: 'absolute',
-    width: 600,
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: 10,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-}))
 const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
   const [data, setData] = useState({})
   let { title, description, price, date } = data && data
@@ -64,8 +51,6 @@ const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
       `,
   }
 
-  const classes = useStyles()
-  const [modalStyle] = React.useState(getModalStyle)
   const [{ response, error, isLoading }, doFetch] = useFetch()
 
   let initialValues = {
@@ -104,11 +89,19 @@ const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
     )
 
   return (
-    <Modal disableBackdropClick open={open} className={styles.dialog_wrapper}>
-      <div style={modalStyle} className={classes.paper}>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      PaperComponent={PaperComponent}
+      aria-labelledby="draggable-dialog-title"
+      disableBackdropClick
+    >
+      <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
         <div className={styles.title} id="alert-dialog-title">
           {data?._id ? 'UPDATE EVENT' : 'CREATE EVENT'}
         </div>
+      </DialogTitle>
+      <DialogContent>
         <div className={styles.description} id="alert-dialog-description">
           <Form
             onSubmit={handleButtonClick}
@@ -182,8 +175,8 @@ const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
             )}
           />
         </div>
-      </div>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   )
 }
 

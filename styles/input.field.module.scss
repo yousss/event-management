@@ -2,13 +2,13 @@
   width: 100%;
   margin: 10px 0px !important;
 
-  .input_field {
+  .input_field,
+  label {
     width: 100%;
     text-transform: capitalize;
-
-    fieldset {
-      border-radius: 10px !important;
-    }
+  }
+  fieldset {
+    border-radius: 10px !important;
   }
   .error_list {
     color: rgb(238, 30, 30);

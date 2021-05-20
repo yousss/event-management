@@ -1,16 +1,54 @@
 import React, { memo, useCallback } from 'react'
 import Typography from '@material-ui/core/Typography'
 import styles from '@styles/card.event.module.scss'
-import Link from 'next/link'
 import { Card, CardActions, CardContent, Button } from '@material-ui/core'
-import CustomDialog from '@components/CustomDialog'
+import CustomDialog from '@components/booked-events/CustomDialog'
+import CancelEventModal from './CancelEventModal'
+import useFetch from '@hooks/useFetch'
+import { useSetRecoilState } from 'recoil'
+import { dispatchToEventListState } from 'store/events'
 
 const Event = ({ myEvent }) => {
   const [open, setOpen] = React.useState(false)
+  const [cancelModalOpen, setCancelModalOpen] = React.useState(false)
+  const [bookedEventId, setBookedEvents] = React.useState('')
+  const setDispatchToEventList = useSetRecoilState(dispatchToEventListState)
 
   const handleClose = useCallback(() => {
     setOpen(false)
   })
+
+  const handleCloseCancelModal = useCallback((val) => {
+    setCancelModalOpen(val)
+  })
+
+  const requestBody = {
+    query: `
+    mutation {
+    cancellBookingEvent (
+      bookingId: "${bookedEventId}") {
+        _id
+        title
+        description
+        creator {
+          username
+        }
+        price
+        date
+      }
+    }
+    `,
+  }
+  const [{ response, error, isLoading }, doFetch] = useFetch()
+
+  React.useEffect(() => {
+    if (bookedEventId) {
+      doFetch({ isAuth: true, url: requestBody })
+
+      setDispatchToEventList({ dispatching: true })
+    }
+    return () => {}
+  }, [bookedEventId])
 
   return (
     <Card className={styles.card}>
@@ -33,7 +71,11 @@ const Event = ({ myEvent }) => {
         </Typography>
       </CardContent>
       <CardActions className={styles.btn_wrapper}>
-        <Button className={styles.button} size="small">
+        <Button
+          onClick={() => handleCloseCancelModal(true)}
+          className={styles.button}
+          size="small"
+        >
           Cancel
         </Button>
         <Button
@@ -45,6 +87,12 @@ const Event = ({ myEvent }) => {
         </Button>
       </CardActions>
       <CustomDialog event={myEvent} open={open} setOpen={handleClose} />
+      <CancelEventModal
+        eventId={myEvent._id}
+        open={cancelModalOpen}
+        setOpen={handleCloseCancelModal}
+        onCancelEvent={setBookedEvents}
+      />
     </Card>
   )
 }

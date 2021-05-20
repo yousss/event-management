@@ -8,6 +8,20 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import styles from '@styles/more.detail.module.scss'
 import moment from '@helpers/moment'
 
+import Paper from '@material-ui/core/Paper'
+import Draggable from 'react-draggable'
+
+function PaperComponent(props) {
+  return (
+    <Draggable
+      handle="#draggable-dialog-title"
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper {...props} />
+    </Draggable>
+  )
+}
+
 const CustomDialog = ({ event, setOpen, open }) => {
   const handleClose = () => {
     setOpen()
@@ -26,11 +40,14 @@ const CustomDialog = ({ event, setOpen, open }) => {
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        PaperComponent={PaperComponent}
         className={styles.dialog_wrapper}
       >
-        <DialogTitle className={styles.title} id="alert-dialog-title">
+        <DialogTitle
+          style={{ cursor: 'move' }}
+          id="draggable-dialog-title"
+          className={styles.title}
+        >
           {title}
         </DialogTitle>
         <DialogContent>

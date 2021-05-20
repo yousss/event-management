@@ -11,7 +11,7 @@ const InputDateField = ({ type, name, icon, onChange, value, meta }) => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <DatePicker
-        className={styles.form_wrapper}
+        className={styles.input_wrapper}
         name={name}
         autoOk
         inputVariant="outlined"
@@ -21,7 +21,7 @@ const InputDateField = ({ type, name, icon, onChange, value, meta }) => {
         value={value}
         onChange={handleChange}
         fullWidth
-        InputAdornmentProps={{ position: 'end' }}
+        InputProps={{ position: 'end' }}
       />
       {meta.error && meta.touched && (
         <span className={styles.error_list}>{meta.error}</span>
