@@ -1,12 +1,18 @@
 import EventList from '@components/booked-events/EventList'
 import React from 'react'
 import BookingEventProvider from '@context/bookingContext'
+import Head from 'next/head'
 
 const Booking = () => {
   return (
-    <BookingEventProvider>
-      <EventList />
-    </BookingEventProvider>
+    <>
+      <Head>
+        <title>Booking Event</title>
+      </Head>
+      <BookingEventProvider>
+        <EventList />
+      </BookingEventProvider>
+    </>
   )
 }
 

@@ -5,7 +5,12 @@
   max-width: 400px;
   width: 100%;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 0px 0px 10px 10px;
+  margin: auto;
+
+  @media screen and (max-width: 600px) {
+    box-shadow: none !important;
+  }
 
   .login_label {
     font-size: 1.3rem;
@@ -18,6 +23,9 @@
 
   .noAccount {
     margin-top: 10px;
+    text-align: right;
+    width: 100%;
+
     a {
       color: sandybrown;
       &:hover {
@@ -25,5 +33,27 @@
         text-transform: uppercase;
       }
     }
+  }
+}
+
+.bg_wrapper {
+  background-image: url('/img/login-bg.jpg');
+  background-size: 100% 100%;
+  max-width: 909px;
+  margin: auto;
+  height: 500px;
+  background-position: bottom;
+  width: 100%;
+  border-radius: 10px;
+
+  @media screen and (max-width: 908px) {
+    border-radius: initial;
+    height: 580px;
+  }
+
+  @media screen and (max-width: 600px) {
+    background-image: none;
+    max-width: initial;
+    height: initial;
   }
 }

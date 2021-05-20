@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import _ from 'lodash'
 import { BASE_URL_PRO } from 'config'
+import Head from 'next/head'
 
 const Authregister = () => {
   const router = useRouter()
@@ -76,6 +77,9 @@ const Authregister = () => {
 
   return (
     <>
+      <Head>
+        <title>Sign Up</title>
+      </Head>
       <RegisterComponent loading={loading} err={err} onRegister={onRegister} />
     </>
   )
