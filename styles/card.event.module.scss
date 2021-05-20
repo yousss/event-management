@@ -25,6 +25,7 @@
     display: flex;
     flex-flow: column wrap;
     justify-content: space-between;
+    align-items: flex-end;
 
     .button {
       background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
