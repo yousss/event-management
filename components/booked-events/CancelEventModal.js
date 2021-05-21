@@ -7,7 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Paper from '@material-ui/core/Paper'
 import Draggable from 'react-draggable'
-import styles from '@styles/event.modal.module.scss'
+import styled from 'styled-components'
 
 function PaperComponent(props) {
   return (
@@ -46,17 +46,31 @@ const CancelEventModal = ({ open, setOpen, eventId, onCancelEvent }) => {
             Are you sure to cancel this events ?
           </DialogContentText>
         </DialogContent>
-        <DialogActions className={styles.btn_wrapper}>
+        <CancelStyleDialogActions>
           <Button onClick={agreeDelete} color="primary">
             Yes
           </Button>
           <Button autoFocus onClick={handleClose} color="primary">
             Cancel
           </Button>
-        </DialogActions>
+        </CancelStyleDialogActions>
       </Dialog>
     </>
   )
 }
 
+const CancelStyleDialogActions = styled(DialogActions)`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+
+  button {
+    border: 0.7px solid coral;
+    margin: 0px 5px;
+  }
+
+  .title {
+    width: 100%;
+  }
+`
 export default memo(CancelEventModal)

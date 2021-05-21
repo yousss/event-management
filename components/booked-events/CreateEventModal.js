@@ -1,6 +1,5 @@
 import React, { useEffect, useState, memo } from 'react'
 import Button from '@material-ui/core/Button'
-import styles from '@styles/event.modal.module.scss'
 import InputField from '@components/InputField'
 import { Form, Field } from 'react-final-form'
 import InputDateField from '@components/InputDateField'
@@ -8,6 +7,7 @@ import { Dialog, DialogContent, DialogTitle, Modal } from '@material-ui/core'
 import useFetch from '@hooks/useFetch'
 import Paper from '@material-ui/core/Paper'
 import Draggable from 'react-draggable'
+import styled from 'styled-components'
 
 function PaperComponent(props) {
   return (
@@ -89,7 +89,7 @@ const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
     )
 
   return (
-    <Dialog
+    <CreateEventModalStyle
       open={open}
       onClose={handleClose}
       PaperComponent={PaperComponent}
@@ -97,12 +97,12 @@ const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
       disableBackdropClick
     >
       <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-        <div className={styles.title} id="alert-dialog-title">
+        <div className="title" id="alert-dialog-title">
           {data?._id ? 'UPDATE EVENT' : 'CREATE EVENT'}
         </div>
       </DialogTitle>
       <DialogContent>
-        <div className={styles.description} id="alert-dialog-description">
+        <div className="description" id="alert-dialog-description">
           <Form
             onSubmit={handleButtonClick}
             initialValues={initialValues}
@@ -163,7 +163,7 @@ const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
                     />
                   )}
                 </Field>
-                <div className={styles.btn_wrapper}>
+                <div className="btn_wrapper">
                   <Button type="submit" color="primary">
                     Save
                   </Button>
@@ -176,8 +176,25 @@ const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
           />
         </div>
       </DialogContent>
-    </Dialog>
+    </CreateEventModalStyle>
   )
 }
 
 export default memo(CreateEventModal)
+
+const CreateEventModalStyle = styled(Dialog)`
+  .btn_wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+
+    button {
+      border: 0.7px solid coral;
+      margin: 0px 5px;
+    }
+  }
+
+  .title {
+    width: 100%;
+  }
+`

@@ -1,11 +1,11 @@
 import React, { memo, useCallback, useEffect, useState } from 'react'
-import styles from '@styles/register.module.scss'
 import InputField from '@components/InputField'
 import { AccountCircle, LocationOn, PhoneIphone } from '@material-ui/icons'
 import { Paper, Avatar } from '@material-ui/core'
 import ButtonProgress from '@components/ButtonProgress'
 import { Field, Form } from 'react-final-form'
 import CustomizedSnackbar from '@components/CustomizedSnackbar'
+import styled from 'styled-components'
 
 const Register = ({ onRegister, loading, err }) => {
   const initialValue = {
@@ -57,7 +57,7 @@ const Register = ({ onRegister, loading, err }) => {
     )
 
   return (
-    <Paper elevation={3} className={styles.register_container}>
+    <RegisterStyle elevation={3}>
       {err && (
         <CustomizedSnackbar
           msg={err}
@@ -66,14 +66,14 @@ const Register = ({ onRegister, loading, err }) => {
           tag="error"
         />
       )}
-      <div className={styles.register_left}>
+      <div className={'register_left'}>
         <Avatar
-          className={styles.avatar}
+          className={'avatar'}
           alt="Travis Howard"
           src="/img/avatar-2.jpeg"
         />
       </div>
-      <div className={styles.register_right}>
+      <div className="register_right">
         <Form
           onSubmit={onSumbitHandler}
           initialValues={initialValue}
@@ -162,8 +162,51 @@ const Register = ({ onRegister, loading, err }) => {
           )}
         />
       </div>
-    </Paper>
+    </RegisterStyle>
   )
 }
+
+const RegisterStyle = styled(Paper)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2181c2;
+  max-width: 700px;
+  width: 100%;
+  margin: auto;
+  padding: 20px;
+  form {
+    width: 100%;
+  }
+  .register_left {
+    flex-basis: 30%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .avatar {
+      width: 125px !important;
+      height: 125px !important;
+    }
+  }
+  .register_right {
+    flex-basis: 70%;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  ${(props) => props.theme.breakpoints.down('sm')} {
+    display: flex;
+    flex-flow: column wrap;
+
+    .register_right {
+      flex-basis: 100%;
+      width: 100%;
+    }
+  }
+`
 
 export default memo(Register)

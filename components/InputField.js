@@ -1,8 +1,7 @@
 import React, { useEffect, useState, memo } from 'react'
-import styles from '@styles/input.field.module.scss'
-
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import { InputAdornment, IconButton, TextField } from '@material-ui/core'
+import styled from 'styled-components'
 
 const InputField = ({ type, name, icon, onChange, value, meta }) => {
   const [showPassword, setShowPassword] = useState(false)
@@ -42,13 +41,15 @@ const InputField = ({ type, name, icon, onChange, value, meta }) => {
           </IconButton>
         ) : icon ? (
           icon
-        ) : null}
+        ) : (
+          <></>
+        )}
       </InputAdornment>
     )
   }
 
   return (
-    <div className={styles.input_wrapper}>
+    <InputFieldStyle>
       <TextField
         label={name}
         variant="outlined"
@@ -56,16 +57,43 @@ const InputField = ({ type, name, icon, onChange, value, meta }) => {
         type={customType}
         value={value}
         onChange={handleChange}
-        className={styles.input_field}
+        className="input_field"
         InputProps={{
           endAdornment: <FieldIcon />,
         }}
       />
       {meta.error && meta.touched && (
-        <span className={styles.error_list}>{meta.error}</span>
+        <span className="error_list">{meta.error}</span>
       )}
-    </div>
+    </InputFieldStyle>
   )
 }
+
+const InputFieldStyle = styled.div`
+  width: 100%;
+  padding: 9px 0px !important;
+  .MuiOutlinedInput-root {
+    border-radius: 10px !important;
+  }
+
+  .MuiOutlinedInput-input {
+    padding: 15px 14px;
+    height: 1.35em;
+  }
+  .input_field,
+  label {
+    width: 100%;
+    top: -2px;
+    text-transform: capitalize;
+  }
+  fieldset {
+    border-radius: 10px !important;
+  }
+  .error_list {
+    color: rgb(238, 30, 30);
+    font-size: 0.8rem;
+    font-style: italic;
+  }
+`
 
 export default memo(InputField)

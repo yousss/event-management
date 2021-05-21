@@ -1,6 +1,5 @@
 import Head from 'next/head'
-import styles from '@styles/layout.module.scss'
-
+import { GlobalStyle } from './AuthLayout'
 import NavBar from '@components/NavBar'
 
 const DefaultLayout = ({ children }) => (
@@ -9,9 +8,11 @@ const DefaultLayout = ({ children }) => (
       <title>Default layout</title>
     </Head>
     <NavBar />
-    <div className={styles.container}>
-      <main className={styles.main}>{children}</main>
-    </div>
+    <GlobalStyle>
+      <div className="container">
+        <main className="main">{children}</main>
+      </div>
+    </GlobalStyle>
   </>
 )
 

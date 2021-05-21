@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import styles from '@styles/home.module.scss'
 import Calendar from 'react-calendar'
 import React, { useState, useEffect } from 'react'
 import 'react-calendar/dist/Calendar.css'
@@ -7,8 +6,9 @@ import { withAuthSync } from '@context/auth'
 import { Card, CircularProgress } from '@material-ui/core'
 import cookie from 'js-cookie'
 import { BASE_URL_PRO } from 'config'
+import styled from 'styled-components'
 
-const Home = function Home(props) {
+const Home = function Home() {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = useState(new Date())
   const [loading, setLoading] = useState(false)
@@ -25,7 +25,7 @@ const Home = function Home(props) {
   }
   const titleAactive = ({ active, date, view }) => {
     return view === 'month' && date.getDate() === 10 ? (
-      <div className={styles.booked}>Meeting</div>
+      <BookedStyle>Meeting</BookedStyle>
     ) : null
   }
 
@@ -67,14 +67,14 @@ const Home = function Home(props) {
   }, [])
 
   return (
-    <div className={styles.home}>
+    <HomeStyle>
       <Head>
         <title>Home</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Card>
         <Calendar
-          className={styles.react_calendar}
+          className={'react_calendar'}
           onChange={handleClick}
           value={value}
           tileContent={titleAactive}
@@ -88,8 +88,44 @@ const Home = function Home(props) {
         />
       )}
       {/* <TransitionsModal openHandler={openHandler} open={open} newDate={value} /> */}
-    </div>
+    </HomeStyle>
   )
 }
 
+const HomeStyle = styled.div`
+  .react_calendar {
+    width: 100% !important;
+    border: none !important;
+    position: relative;
+
+    button {
+      position: relative;
+      height: 50px;
+    }
+  }
+  width: 100% !important;
+  border: none !important;
+  position: relative;
+
+  button {
+    position: relative;
+    height: 50px;
+  }
+  .act-calendar__tile {
+    position: relative;
+  }
+  .disabled {
+    background-color: hotpink;
+  }
+`
+const BookedStyle = styled.div`
+  color: rgb(0, 255, 157);
+  position: absolute;
+  right: 0;
+  top: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+`
 export default withAuthSync(Home)

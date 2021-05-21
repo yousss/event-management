@@ -1,13 +1,15 @@
-import '@styles/globals.scss'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress' //nprogress module
 import 'nprogress/nprogress.css' //styles of nprogress
 import LayoutWrapper from '@components/layouts/LayoutWrapper'
 import { RecoilRoot } from 'recoil'
+import { ThemeProvider as SCThemeProvider } from 'styled-components'
+import { useTheme } from '@material-ui/core/styles'
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
+  const muiTheme = useTheme()
 
   useEffect(() => {
     const handleRouteChange = (url, { shallow }) => {
@@ -28,11 +30,15 @@ function MyApp({ Component, pageProps }) {
     }
   }, [])
   return (
-    <RecoilRoot>
-      <LayoutWrapper {...pageProps}>
-        <Component {...pageProps} />
-      </LayoutWrapper>
-    </RecoilRoot>
+    <>
+      <RecoilRoot>
+        <SCThemeProvider theme={muiTheme}>
+          <LayoutWrapper {...pageProps}>
+            <Component {...pageProps} />
+          </LayoutWrapper>
+        </SCThemeProvider>
+      </RecoilRoot>
+    </>
   )
 }
 
