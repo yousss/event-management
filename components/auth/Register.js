@@ -6,6 +6,8 @@ import ButtonProgress from '@components/ButtonProgress'
 import { Field, Form } from 'react-final-form'
 import CustomizedSnackbar from '@components/CustomizedSnackbar'
 import styled from 'styled-components'
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import { useRouter } from 'next/router'
 
 const Register = ({ onRegister, loading, err }) => {
   const initialValue = {
@@ -16,6 +18,7 @@ const Register = ({ onRegister, loading, err }) => {
     address: '',
     phone: '',
   }
+  const router = useRouter()
   const onSumbitHandler = (values) => {
     const { password, username, email, address, full_name, phone } = values
     onRegister({
@@ -33,6 +36,10 @@ const Register = ({ onRegister, loading, err }) => {
   const handleCloseCallback = useCallback(() => {
     setOpen(false)
   })
+
+  const goToLogin = () => {
+    router.back()
+  }
 
   useEffect(() => {
     setOpen(true)
@@ -66,6 +73,7 @@ const Register = ({ onRegister, loading, err }) => {
           tag="error"
         />
       )}
+      <ChevronLeftIcon className="back-icon" onClick={goToLogin} />
       <div className={'register_left'}>
         <Avatar
           className={'avatar'}
@@ -175,6 +183,23 @@ const RegisterStyle = styled(Paper)`
   width: 100%;
   margin: auto;
   padding: 20px;
+  position: relative;
+  border-radius: 10px !important;
+
+  .back-icon {
+    font-size: 2.3rem;
+    fill: #ff8e53;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    &:hover {
+      background-color: lightgrey;
+      border-radius: 50%;
+    }
+  }
+
   form {
     width: 100%;
   }
@@ -184,6 +209,8 @@ const RegisterStyle = styled(Paper)`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    height: 100%;
 
     .avatar {
       width: 125px !important;

@@ -80,6 +80,10 @@ const InputFieldStyle = styled.div`
     padding: 15px 14px;
     height: 1.35em;
   }
+  .MuiSvgIcon-root {
+    fill: #794124;
+  }
+
   .input_field,
   label {
     width: 100%;

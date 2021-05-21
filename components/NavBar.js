@@ -3,11 +3,11 @@ import { AppBar } from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
 import { MenuItem } from '@material-ui/core'
 import { logout } from '@context/auth'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
+import SwipeableDrawerLeft from './DrawerLeft'
 
 const NavBar = () => {
   const router = useRouter()
@@ -29,7 +29,7 @@ const NavBar = () => {
           color="inherit"
           aria-label="menu"
         >
-          <MenuIcon />
+          <SwipeableDrawerLeft />
         </IconButton>
         <Typography component="div" className={'action_button'}>
           <Typography variant="h6" className="title">
