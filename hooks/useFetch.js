@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import cookie from 'js-cookie'
 import { BASE_URL_PRO } from 'config'
+import { useRouter } from 'next/router'
 
 const useFetch = () => {
+  const router = useRouter()
   const [response, setResponse] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -15,6 +17,8 @@ const useFetch = () => {
   useEffect(() => {
     if (!isLoading) {
       return
+    } else if (cookie.get('token') === null && isLoading) {
+      router.push('/login')
     }
     const headers = {
       'Content-Type': 'application/json',

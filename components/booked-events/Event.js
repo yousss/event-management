@@ -61,7 +61,7 @@ const Event = ({ myEvent }) => {
   const bodyRequest = isBooked ? requestBodyBookedEvent : requestBody
 
   const [{ response, error, isLoading }, doFetch] = useFetch()
-  console.log('isBooked', bookedCancel)
+  console.log('isBooked', bookedCancel, requestBody)
   React.useEffect(() => {
     if (bookedEventId) {
       doFetch({ isAuth: true, url: bodyRequest })
