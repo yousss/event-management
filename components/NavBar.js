@@ -82,5 +82,9 @@ const NavBarStyle = styled(AppBar)`
     padding: 0;
     margin: 0;
     background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
+
+    .menuButton {
+      margin: 0;
+    }
   }
 `

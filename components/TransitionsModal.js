@@ -1,12 +1,12 @@
 import { Fade, Modal, Backdrop, Card } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
-import styles from '@styles/transition.modal.module.scss'
 import InputField from '@components/InputField'
 import ButtonProgress from './ButtonProgress'
 import { BASE_URL_PRO } from 'config'
 import cookie from 'js-cookie'
 import CustomizedSnackbar from './CustomizedSnackbar'
 import { AccountCircle } from '@material-ui/icons'
+import styled from 'styled-components'
 
 export default function TransitionsModal({ open, openHandler, newDate = '' }) {
   const [loading, setLoading] = React.useState(false)
@@ -84,10 +84,10 @@ export default function TransitionsModal({ open, openHandler, newDate = '' }) {
 
   return (
     <>
-      <Modal
+      <TransitionsModalStyle
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={styles.modal_wrapper}
+        className="modal_wrapper"
         open={open}
         onClose={handleClose}
         closeAfterTransition
@@ -97,8 +97,8 @@ export default function TransitionsModal({ open, openHandler, newDate = '' }) {
         }}
       >
         <Fade in={open}>
-          <div className={styles.paper}>
-            <Card className={styles.card_wrapper}>
+          <div className="paper">
+            <Card className="card_wrapper">
               <h2 id="transition-modal-title">CREAE EVENT</h2>
               <InputField
                 name="title"
@@ -136,7 +136,7 @@ export default function TransitionsModal({ open, openHandler, newDate = '' }) {
             </Card>
           </div>
         </Fade>
-      </Modal>
+      </TransitionsModalStyle>
       <CustomizedSnackbar
         msg="Event has been succesfully created."
         handleOpen={handleOpen}
@@ -152,3 +152,29 @@ export const convertDate = function (str) {
     day = ('0' + date.getDate()).slice(-2)
   return [date.getFullYear(), mnth, day].join('-')
 }
+
+const TransitionsModalStyle = styled(Modal)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 600px;
+  margin: auto;
+  width: 100%;
+
+  .paper {
+    display: flex;
+    width: 100%;
+    text-align: center;
+
+    .card_wrapper {
+      padding: 10px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .text_field {
+      width: 100%;
+    }
+  }
+`

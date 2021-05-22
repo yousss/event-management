@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import '@styles/global.scss'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress' //nprogress module
 import 'nprogress/nprogress.css' //styles of nprogress
