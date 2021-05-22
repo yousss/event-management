@@ -26,7 +26,7 @@ const EventList = () => {
     setPage(page)
   }
   const setIsCancelCallback = useCallback((val) => {
-    if (val == 'cancel') {
+    if (val === 'cancel') {
       setIsCancel((preve) => {
         return { ...preve, cancel: true }
       })
@@ -47,6 +47,7 @@ const EventList = () => {
           description
           date
           price
+          isBooked
           creator {
             username
           }
@@ -62,17 +63,14 @@ const EventList = () => {
   const [{ response, error, isLoading }, doFetch] = useFetch()
 
   useEffect(() => {
-    doFetch({ isAuth: true, url: requestBody })
+    const isValid = readDispatchingEventState?.dispatching
+    if (!save && !isValid) {
+      doFetch({ isAuth: true, url: requestBody })
+    } else if (save || isValid) {
+      doFetch({ isAuth: true, url: requestBody })
+    }
     return () => {}
-  }, [page])
-
-  useEffect(() => {
-    save && response?.events?.events && doFetch({ isAuth: true })
-  }, [save])
-
-  useEffect(() => {
-    readDispatchingEventState?.dispatching && doFetch({ isAuth: true })
-  }, [readDispatchingEventState])
+  }, [page, save, readDispatchingEventState])
 
   const pageSize = response?.events?.pageInfo?.rowCount
   const size = Math.ceil(pageSize / rowPerPage)

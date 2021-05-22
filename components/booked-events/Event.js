@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react'
 import Typography from '@material-ui/core/Typography'
 import { Card, CardActions, CardContent, Button } from '@material-ui/core'
 import CustomDialog from '@components/booked-events/CustomDialog'
-import CancelEventModal from './CancelEventModal'
+import EventModal from './EventModal'
 import useFetch from '@hooks/useFetch'
 import { useSetRecoilState } from 'recoil'
 import { dispatchToEventListState } from 'store/events'
@@ -12,6 +12,7 @@ const Event = ({ myEvent }) => {
   const [open, setOpen] = React.useState(false)
   const [cancelModalOpen, setCancelModalOpen] = React.useState(false)
   const [bookedEventId, setBookedEvents] = React.useState('')
+  const [bookedCancel, setBookedCancel] = React.useState({ isBooked: false })
   const setDispatchToEventList = useSetRecoilState(dispatchToEventListState)
 
   const handleClose = useCallback(() => {
@@ -39,12 +40,31 @@ const Event = ({ myEvent }) => {
     }
     `,
   }
-  const [{ response, error, isLoading }, doFetch] = useFetch()
+  const requestBodyBookedEvent = {
+    query: `
+    mutation {
+      bookEvent (
+        eventId: "${bookedEventId}") {
+        _id
+        user {
+          username
+        }
+        event {
+          _id
+        }
+        createdAt
+        }
+    }
+    `,
+  }
+  const { isBooked } = bookedCancel
+  const bodyRequest = isBooked ? requestBodyBookedEvent : requestBody
 
+  const [{ response, error, isLoading }, doFetch] = useFetch()
+  console.log('isBooked', bookedCancel)
   React.useEffect(() => {
     if (bookedEventId) {
-      doFetch({ isAuth: true, url: requestBody })
-
+      doFetch({ isAuth: true, url: bodyRequest })
       setDispatchToEventList({ dispatching: true })
     }
     return () => {}
@@ -62,23 +82,40 @@ const Event = ({ myEvent }) => {
         </Typography>
       </CardContent>
       <CardActions className="btn_wrapper">
-        <Button
-          onClick={() => handleCloseCancelModal(true)}
-          className="button"
-          size="small"
-        >
-          Cancel
-        </Button>
+        {myEvent?.isBooked === 2 ? (
+          <Button
+            onClick={() => {
+              handleCloseCancelModal(true)
+              setBookedCancel({ isBooked: false })
+            }}
+            className="button"
+            size="small"
+          >
+            Cancel
+          </Button>
+        ) : (
+          <Button
+            onClick={() => {
+              handleCloseCancelModal(true)
+              setBookedCancel({ isBooked: true })
+            }}
+            className="button"
+            size="small"
+          >
+            Book
+          </Button>
+        )}
         <Button className="button" onClick={() => setOpen(true)} size="small">
           Detail
         </Button>
       </CardActions>
       <CustomDialog event={myEvent} open={open} setOpen={handleClose} />
-      <CancelEventModal
+      <EventModal
         eventId={myEvent._id}
         open={cancelModalOpen}
         setOpen={handleCloseCancelModal}
         onCancelEvent={setBookedEvents}
+        isBooked={bookedCancel}
       />
     </CardStyleEvent>
   )

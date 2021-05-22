@@ -20,7 +20,8 @@ function PaperComponent(props) {
   )
 }
 
-const CancelEventModal = ({ open, setOpen, eventId, onCancelEvent }) => {
+const EventModal = (props) => {
+  const { open, setOpen, eventId, onCancelEvent, isBooked } = props
   const handleClose = () => {
     setOpen(false)
   }
@@ -30,6 +31,9 @@ const CancelEventModal = ({ open, setOpen, eventId, onCancelEvent }) => {
     onCancelEvent(eventId)
   }
 
+  const txt = isBooked
+    ? 'Are you sure to book this event ?'
+    : 'Are you sure to cancel this events ?'
   return (
     <>
       <Dialog
@@ -42,9 +46,7 @@ const CancelEventModal = ({ open, setOpen, eventId, onCancelEvent }) => {
           {eventId}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Are you sure to cancel this events ?
-          </DialogContentText>
+          <DialogContentText>{txt}</DialogContentText>
         </DialogContent>
         <CancelStyleDialogActions>
           <Button onClick={agreeDelete} color="primary">
@@ -73,4 +75,4 @@ const CancelStyleDialogActions = styled(DialogActions)`
     width: 100%;
   }
 `
-export default memo(CancelEventModal)
+export default memo(EventModal)

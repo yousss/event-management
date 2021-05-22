@@ -41,6 +41,7 @@ const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
           _id
           title
           description
+          isBooked
           creator {
             username
           }
@@ -61,8 +62,8 @@ const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
   }
 
   useEffect(() => {
-    response && handleClose('save')
-  }, [response])
+    response && !isLoading && handleClose('save')
+  }, [response, isLoading])
 
   useEffect(() => {
     data &&
@@ -164,7 +165,7 @@ const CreateEventModal = ({ setIsCancel, setOpen, open }) => {
                   )}
                 </Field>
                 <div className="btn_wrapper">
-                  <Button type="submit" color="primary">
+                  <Button type="submit" color="primary" disabled={isLoading}>
                     Save
                   </Button>
                   <Button onClick={() => handleClose('cancel')} color="primary">
