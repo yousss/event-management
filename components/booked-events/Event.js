@@ -30,6 +30,7 @@ const Event = ({ myEvent }) => {
       bookingId: "${bookedEventId}") {
         _id
         title
+        isBooked
         description
         creator {
           username
@@ -51,6 +52,7 @@ const Event = ({ myEvent }) => {
         }
         event {
           _id
+          isBooked
         }
         createdAt
         }
@@ -61,7 +63,6 @@ const Event = ({ myEvent }) => {
   const bodyRequest = isBooked ? requestBodyBookedEvent : requestBody
 
   const [{ response, error, isLoading }, doFetch] = useFetch()
-  console.log('isBooked', bookedCancel, requestBody)
   React.useEffect(() => {
     if (bookedEventId) {
       doFetch({ isAuth: true, url: bodyRequest })

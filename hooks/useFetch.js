@@ -33,10 +33,27 @@ const useFetch = () => {
       body: JSON.stringify(options?.url),
       headers: headers,
     }
+
+    const fetch = window.fetch
+    window.fetch = (...args) =>
+      (async (args) => {
+        var result = await fetch(...args)
+        // console.log(result, args)  intercept response here
+        return result
+      })(args)
+
     const fetchData = async () => {
       try {
         const res = await fetch(BASE_URL_PRO, newOption)
-        const { data } = await res.json()
+        const { data, errors } = await res.json()
+        if (
+          errors &&
+          (errors[0].message === 'Unauthenticated' ||
+            errors[0].message === 'Unauthenticated.')
+        ) {
+          router.push('/login')
+        }
+        setError(errors)
         setResponse(data)
       } catch (err) {
         const data = err.response ? err.response.data : 'Server error'
