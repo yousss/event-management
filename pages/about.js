@@ -1,14 +1,20 @@
 import React from 'react'
 import Head from 'next/head'
-import styles from '@styles/about.module.scss'
+import styled from 'styled-components'
 
 const about = (props) => (
   <>
     <Head>
       <title>About</title>
     </Head>
-    <h1 className={styles.h1}>Hello about page</h1>
+    <StyledAbout>Hello about page</StyledAbout>
   </>
 )
+
+const StyledAbout = styled.h1`
+  font-size: 3rem;
+  font-weight: 800;
+  color: #444;
+`
 
 export default about
