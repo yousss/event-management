@@ -23,11 +23,9 @@ const ProfileAccount = () => {
         </div>
         <div className="section-wrapper">
           <div className="box-text">Account Settings</div>
-          <div className="badge">30</div>
         </div>
         <div className="section-wrapper">
           <div className="box-text">Statics</div>
-          <div className="badge">30</div>
         </div>
       </div>
       <div className="profile-picture">
@@ -78,6 +76,16 @@ const StyledProfileAccount = styled.div`
       color: #fff;
       padding: 10px 20px;
       font-size: 1rem;
+      box-shadow: inset 0px -2px 2px 0px #7d4e4e;
+
+      &:last-child {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+      &:first-child {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
 
       .box-menu {
         width: 100%;
