@@ -39,6 +39,9 @@ const NavBar = () => {
             <MenuItem onClick={() => goToPage('/user')}>Users</MenuItem>
           </Typography>
           <Typography variant="h6" className="title">
+            <MenuItem onClick={() => goToPage('/account')}>My Account</MenuItem>
+          </Typography>
+          <Typography variant="h6" className="title">
             <MenuItem onClick={navLogout}>Logout</MenuItem>
           </Typography>
         </Typography>
