@@ -1,4 +1,4 @@
-import { Avatar } from '@material-ui/core'
+import { Avatar, Typography } from '@material-ui/core'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -35,6 +35,23 @@ const ProfileAccount = () => {
           src="/img/cute-girl.jpg"
           className="avarta"
         />
+        <Typography className="speech" component="div">
+          lorem lorem lorem lorem lorem lorem loremlorem
+        </Typography>
+        <Typography className="wrapper-info" component="div">
+          <Typography className="info" component="div">
+            <p>Full name</p>
+            <h4>Yoeun Yous</h4>
+          </Typography>
+          <Typography className="info" component="div">
+            <p>Title</p>
+            <h4>Head of Information Technology</h4>
+          </Typography>
+          <Typography className="info" component="div">
+            <p>Department</p>
+            <h4>Information Technology</h4>
+          </Typography>
+        </Typography>
       </div>
     </StyledProfileAccount>
   )
@@ -44,21 +61,33 @@ const StyledProfileAccount = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-flow: row wrap;
   width: 100%;
 
   .profile-picture {
-    max-width: 33%;
-    flex-basis: 33%;
+    max-width: 70%;
+    flex-basis: 70%;
     width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column wrap;
 
     .avarta {
       border: 5px solid #e6a684;
     }
+    .speech {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0px 0.7px 0px 0.6px #dcd7d4;
+    }
   }
 
   .menu-box {
-    max-width: 33%;
-    flex-basis: 33%;
+    max-width: 30%;
+    flex-basis: 30%;
     width: 100%;
     display: flex;
     justify-content: space-around;
