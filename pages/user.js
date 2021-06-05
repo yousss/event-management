@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import React from 'react'
+import { withAuthSync } from '@context/auth'
 
 const User = () => {
   return (
@@ -12,4 +13,4 @@ const User = () => {
   )
 }
 
-export default User
+export default withAuthSync(User)

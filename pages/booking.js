@@ -1,5 +1,7 @@
 import EventList from '@components/booked-events/EventList'
 import React from 'react'
+import { withAuthSync } from '@context/auth'
+
 import BookingEventProvider from '@context/bookingContext'
 import Head from 'next/head'
 
@@ -16,4 +18,4 @@ const Booking = () => {
   )
 }
 
-export default Booking
+export default withAuthSync(Booking)
