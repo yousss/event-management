@@ -44,6 +44,9 @@ const DatePickerStyle = styled.div`
   fieldset {
     border-radius: 10px !important;
   }
+  .MuiOutlinedInput-input {
+    padding: 13px 14px;
+  }
   .error_list {
     color: rgb(238, 30, 30);
     font-size: 0.8rem;

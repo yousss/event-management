@@ -77,7 +77,7 @@ const InputFieldStyle = styled.div`
   }
 
   .MuiOutlinedInput-input {
-    padding: 15px 14px;
+    padding: 12px 14px;
     height: 1.35em;
   }
   .MuiSvgIcon-root {
@@ -87,7 +87,7 @@ const InputFieldStyle = styled.div`
   .input_field,
   label {
     width: 100%;
-    top: -2px;
+    top: -5px;
     text-transform: capitalize;
   }
   fieldset {
