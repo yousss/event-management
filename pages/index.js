@@ -4,14 +4,14 @@ import React, { useState, useEffect } from 'react'
 import 'react-calendar/dist/Calendar.css'
 import { withAuthSync } from '@context/auth'
 import { Card, CircularProgress } from '@material-ui/core'
-import cookie from 'js-cookie'
-import { BASE_URL_PRO } from 'config'
 import styled from 'styled-components'
+import useFetch from '@hooks/useFetch'
+import NavigateNextIcon from '@material-ui/icons/NavigateNext'
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore'
 
 const Home = function Home() {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = useState(new Date())
-  const [loading, setLoading] = useState(false)
 
   const handleClick = (e) => {
     setOpen(true)
@@ -20,8 +20,48 @@ const Home = function Home() {
   const openHandler = (e) => {
     setOpen(false)
   }
+
+  const requestBody = {
+    query: `
+    query {
+      bookings {
+        _id
+        event {
+          _id
+        }
+        user {
+          username
+        }
+        createdAt
+      }
+    }
+    `,
+  }
+
+  const [{ response, error, isLoading }, doFetch] = useFetch()
+
+  useEffect(async () => {
+    doFetch({ isAuth: true, url: requestBody })
+  }, [])
+
+  let bookedDate = response?.bookings?.map((x) => {
+    return new Date(x.createdAt).getDate()
+  }, [])
+
+  let bookedMonth = response?.bookings?.map((x) => {
+    return new Date(x.createdAt).getMonth()
+  }, [])
+  console.log(bookedMonth, bookedDate)
   const activeDate = ({ active, date, view }) => {
-    return date.getDate() === 8
+    if (
+      bookedDate &&
+      bookedMonth &&
+      bookedMonth.includes(date.getMonth()) &&
+      Object.keys(bookedDate).length > 0 &&
+      bookedDate.includes(date.getDate())
+    )
+      return true
+    return false
   }
   const titleAactive = ({ active, date, view }) => {
     return view === 'month' && date.getDate() === 10 ? (
@@ -29,42 +69,8 @@ const Home = function Home() {
     ) : null
   }
 
-  useEffect(async () => {
-    setLoading(true)
-    const requestBody = {
-      query: `
-      query {
-        events {
-        _id
-        title
-        description
-        date
-        price
-        creator {
-          username
-        }
-      }
-    }
-    `,
-    }
-    try {
-      const res = await fetch(BASE_URL_PRO, {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + cookie.get('token'),
-        },
-      })
-      const { data } = await res.json()
-      console.log(data)
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setLoading(false)
-    }
-    return () => {}
-  }, [])
+  const onViewChange = ({ activeStartDate, value, view }) =>
+    alert('New view is: ', view)
 
   return (
     <HomeStyle>
@@ -74,14 +80,17 @@ const Home = function Home() {
       </Head>
       <Card>
         <Calendar
+          nextLabel={<NavigateNextIcon onClick={onViewChange} />}
+          prevLabel={<NavigateBeforeIcon onClick={onViewChange} />}
           className={'react_calendar'}
           onChange={handleClick}
           value={value}
           tileContent={titleAactive}
           tileDisabled={activeDate}
+          onViewChange={onViewChange}
         ></Calendar>
       </Card>
-      {loading && (
+      {isLoading && (
         <CircularProgress
           style={{ position: 'absolute', top: '50%', left: '50%' }}
           color="secondary"
