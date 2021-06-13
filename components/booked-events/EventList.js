@@ -1,41 +1,41 @@
-import React, { memo, useState, useCallback, useEffect } from 'react'
-import useFetch from '@hooks/useFetch'
-import EventItem from './Event'
-import { Button, CircularProgress, Typography } from '@material-ui/core'
-import CreateEventModal from './CreateEventModal'
-import { Pagination } from '@material-ui/lab'
-import { useRecoilValue } from 'recoil'
-import { dispatchToEventListState } from 'store/events'
-import styled from 'styled-components'
+import React, { memo, useState, useCallback, useEffect } from "react";
+import useFetch from "@hooks/useFetch";
+import EventItem from "./Event";
+import { Button, CircularProgress, Typography } from "@material-ui/core";
+import CreateEventModal from "./CreateEventModal";
+import { Pagination } from "@material-ui/lab";
+import { useRecoilValue } from "recoil";
+import { dispatchToEventListState } from "store/events";
+import styled from "styled-components";
 
 const EventList = () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   const [{ cancel, save }, setIsCancel] = useState({
     cancel: false,
     save: false,
-  })
-  const [page, setPage] = useState(1)
-  const [rowPerPage, setRowPerPage] = useState(10)
-  const readDispatchingEventState = useRecoilValue(dispatchToEventListState)
+  });
+  const [page, setPage] = useState(1);
+  const [rowPerPage, setRowPerPage] = useState(7);
+  const readDispatchingEventState = useRecoilValue(dispatchToEventListState);
 
   const openModal = useCallback(() => {
-    setOpen(false)
-  })
+    setOpen(false);
+  });
 
   const handlePaging = (e, page) => {
-    setPage(page)
-  }
+    setPage(page);
+  };
   const setIsCancelCallback = useCallback((val) => {
-    if (val === 'cancel') {
+    if (val === "cancel") {
       setIsCancel((preve) => {
-        return { ...preve, cancel: true }
-      })
+        return { ...preve, cancel: true };
+      });
     } else {
       setIsCancel((preve) => {
-        return { ...preve, save: true }
-      })
+        return { ...preve, save: true };
+      });
     }
-  })
+  });
 
   const requestBody = {
     query: `
@@ -58,30 +58,30 @@ const EventList = () => {
       }
     }
     `,
-  }
+  };
 
-  const [{ response, error, isLoading }, doFetch] = useFetch()
+  const [{ response, error, isLoading }, doFetch] = useFetch();
 
   useEffect(() => {
-    const isValid = readDispatchingEventState?.dispatching
+    const isValid = readDispatchingEventState?.dispatching;
     if (!save && !isValid) {
-      doFetch({ isAuth: true, url: requestBody })
+      doFetch({ isAuth: true, url: requestBody });
     } else if (save || isValid) {
-      doFetch({ isAuth: true, url: requestBody })
+      doFetch({ isAuth: true, url: requestBody });
     }
-    return () => {}
-  }, [page, save, readDispatchingEventState])
+    return () => {};
+  }, [page, save, readDispatchingEventState]);
 
-  const pageSize = response?.events?.pageInfo?.rowCount
-  const size = Math.ceil(pageSize / rowPerPage)
+  const pageSize = response?.events?.pageInfo?.rowCount;
+  const size = Math.ceil(pageSize / rowPerPage);
 
   if (isLoading) {
     return (
       <CircularProgress
-        style={{ position: 'absolute', top: '50%', left: '50%' }}
+        style={{ position: "absolute", top: "50%", left: "50%" }}
         color="secondary"
       />
-    )
+    );
   }
 
   return (
@@ -92,13 +92,14 @@ const EventList = () => {
         </Button>
       </Typography>
       {response?.events?.events.map((event) => {
-        return <EventItem key={event._id} myEvent={event} />
+        return <EventItem key={event._id} myEvent={event} />;
       })}
       <Pagination
         onChange={handlePaging}
         page={page}
         className="pagination_wrapper"
         count={size}
+        siblingCount={0}
         color="secondary"
       />
       {open && (
@@ -109,8 +110,8 @@ const EventList = () => {
         />
       )}
     </EventListStyle>
-  )
-}
+  );
+};
 
 const EventListStyle = styled.div`
   max-width: 600px;
@@ -142,6 +143,6 @@ const EventListStyle = styled.div`
       font-size: 0.8rem;
     }
   }
-`
+`;
 
-export default memo(EventList)
+export default memo(EventList);

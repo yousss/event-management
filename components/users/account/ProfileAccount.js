@@ -1,8 +1,17 @@
-import { Avatar, Typography } from '@material-ui/core'
-import React from 'react'
-import styled from 'styled-components'
+import { Avatar, Typography } from "@material-ui/core";
+import React from "react";
+import styled from "styled-components";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 const ProfileAccount = () => {
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  }, [loading]);
+
   return (
     <StyledProfileAccount>
       <div className="menu-box">
@@ -29,14 +38,22 @@ const ProfileAccount = () => {
         </div>
       </div>
       <div className="profile-picture">
-        <Avatar
-          style={{ height: 200, width: 200 }}
-          alt="Remy Sharp"
-          src="/img/cute-girl.jpg"
-          className="avarta"
-        />
+        {loading ? (
+          <Skeleton variant="circle">
+            <Avatar className="avarta" style={{ height: 200, width: 200 }} />
+          </Skeleton>
+        ) : (
+          <Avatar
+            style={{ height: 200, width: 200 }}
+            alt="Remy Sharp"
+            src="/img/cute-girl.jpg"
+            className="avarta"
+          />
+        )}
         <Typography className="speech" component="div">
-          lorem lorem lorem lorem lorem lorem loremlorem
+          10 year of experiences in managing finanancial reporting and tax
+          payments. She exclusively inspired all her co-workers or
+          subbordinates. She is easy-going person and inter-personal person.
         </Typography>
         <Typography className="wrapper-info" component="div">
           <Typography className="info" component="div">
@@ -54,8 +71,8 @@ const ProfileAccount = () => {
         </Typography>
       </div>
     </StyledProfileAccount>
-  )
-}
+  );
+};
 
 const StyledProfileAccount = styled.div`
   display: flex;
@@ -82,6 +99,18 @@ const StyledProfileAccount = styled.div`
       padding: 10px;
       border-radius: 10px;
       box-shadow: 0px 0.7px 0px 0.6px #dcd7d4;
+    }
+
+    .wrapper-info {
+      display: flex;
+
+      .info {
+        flex: 1;
+        box-shadow: 1px 2px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 0px 10px;
+      }
     }
   }
 
@@ -137,6 +166,29 @@ const StyledProfileAccount = styled.div`
       font-size: 1.4rem;
     }
   }
-`
 
-export default ProfileAccount
+  ${(props) => props.theme.breakpoints.down("sm")} {
+    flex-flow: column-reverse wrap;
+
+    .profile-picture,
+    .menu-box {
+      flex-basis: 100%;
+      min-width: 100%;
+      width: 100%;
+      margin: auto;
+    }
+  }
+
+  ${(props) => props.theme.breakpoints.down("xs")} {
+    flex-flow: column-reverse wrap;
+
+    .profile-picture {
+      .wrapper-info {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
+  }
+`;
+
+export default ProfileAccount;

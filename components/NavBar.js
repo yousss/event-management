@@ -1,56 +1,33 @@
-import React from 'react'
-import { AppBar } from '@material-ui/core'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import IconButton from '@material-ui/core/IconButton'
-import { MenuItem } from '@material-ui/core'
-import { logout } from '@context/auth'
-import { useRouter } from 'next/router'
-import styled from 'styled-components'
-import SwipeableDrawerLeft from './DrawerLeft'
+import React from "react";
+import { AppBar } from "@material-ui/core";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import styled from "styled-components";
+import SwipeableDrawerLeft from "./DrawerLeft";
+import Menu from "./menus";
 
 const NavBar = () => {
-  const router = useRouter()
-
-  const navLogout = () => {
-    logout()
-  }
-
-  const goToPage = (link) => {
-    router.push(link)
-  }
-
   return (
     <NavBarStyle position="static">
-      <Toolbar className={'toolbar_wrapper'}>
+      <Toolbar className={"toolbar_wrapper"}>
         <IconButton
           edge="start"
-          className={'menuButton'}
+          className={"menuButton"}
           color="inherit"
           aria-label="menu"
         >
           <SwipeableDrawerLeft />
         </IconButton>
-        <Typography component="div" className={'action_button'}>
-          <Typography variant="h6" className="title">
-            <MenuItem onClick={() => goToPage('/booking')}>Booking</MenuItem>
-          </Typography>
-          <Typography variant="h6" className="title">
-            <MenuItem onClick={() => goToPage('/user')}>Users</MenuItem>
-          </Typography>
-          <Typography variant="h6" className="title">
-            <MenuItem onClick={() => goToPage('/account')}>My Account</MenuItem>
-          </Typography>
-          <Typography variant="h6" className="title">
-            <MenuItem onClick={navLogout}>Logout</MenuItem>
-          </Typography>
+        <Typography component="div" className={"action_button"}>
+          <Menu />
         </Typography>
       </Toolbar>
     </NavBarStyle>
-  )
-}
+  );
+};
 
-export default NavBar
+export default NavBar;
 
 const NavBarStyle = styled(AppBar)`
   .action_button {
@@ -90,4 +67,4 @@ const NavBarStyle = styled(AppBar)`
       margin: 0;
     }
   }
-`
+`;
