@@ -4,12 +4,31 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useRouter } from "next/router";
 import { logout } from "@context/auth";
 
+const MyMenu = React.memo(({ goToPage, label, selected }) => {
+  const capital = label.charAt(0).toUpperCase() + label.slice(1);
+
+  return (
+    <Typography variant="h6" className="title">
+      <MenuItem
+        selected={selected === label}
+        onClick={() => {
+          goToPage(`${label}`);
+        }}
+      >
+        {capital}
+      </MenuItem>
+    </Typography>
+  );
+});
+
 const Menu = ({ drawer }) => {
   const theme = useTheme();
   const router = useRouter();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
+  const [selected, setSelected] = React.useState("");
 
   const goToPage = (link) => {
+    setSelected(link);
     router.push(link);
   };
 
@@ -17,43 +36,18 @@ const Menu = ({ drawer }) => {
     logout();
   };
 
-  const MobileRender = () => (
+  const NavBarMenu = () => (
     <>
-      <Typography variant="h6" className="title">
-        <MenuItem onClick={() => goToPage("/account")}>My Account</MenuItem>
-      </Typography>
+      <MyMenu goToPage={goToPage} selected={selected} label={"booking"} />
+      <MyMenu goToPage={goToPage} selected={selected} label={"user"} />
+      <MyMenu goToPage={goToPage} selected={selected} label={"map"} />
+      <MyMenu goToPage={goToPage} selected={selected} label={"account"} />
       <Typography variant="h6" className="title">
         <MenuItem onClick={navLogout}>Logout</MenuItem>
       </Typography>
     </>
   );
-
-  const NavBarMenu = () => (
-    <>
-      <Typography variant="h6" className="title">
-        <MenuItem onClick={() => goToPage("/booking")}>Booking</MenuItem>
-      </Typography>
-      <Typography variant="h6" className="title">
-        <MenuItem onClick={() => goToPage("/user")}>Users</MenuItem>
-      </Typography>
-    </>
-  );
-
-  if (drawer && matches) {
-    return <MobileRender />;
-  } else if (!drawer && matches) {
-    return <NavBarMenu />;
-  }
-
-  if (!matches && drawer) return null;
-
-  if (!matches && !drawer)
-    return (
-      <>
-        <NavBarMenu />
-        <MobileRender />
-      </>
-    );
+  return <NavBarMenu />;
 };
 
-export default Menu;
+export default React.memo(Menu);

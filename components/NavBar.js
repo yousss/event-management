@@ -34,6 +34,10 @@ const NavBarStyle = styled(AppBar)`
     display: flex;
     width: 100%;
     justify-content: flex-end;
+
+    .active {
+      color: #4c3a3a;
+    }
   }
   .title a {
     color: #0070f3;

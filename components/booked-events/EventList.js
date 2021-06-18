@@ -119,6 +119,7 @@ const EventListStyle = styled.div`
   display: flex;
   justify-content: flex-end;
   flex-direction: column;
+  padding: 20px 0px;
 
   .event_list_create_btn {
     text-align: right;
