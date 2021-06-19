@@ -3,16 +3,18 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
-import Menu from "./menus";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core";
+import { logout } from "@context/auth";
+import styled from "styled-components";
 
 const useStyles = makeStyles({
   list: {
@@ -54,6 +56,10 @@ export default function SwipeableDrawerLeft({ anchor = "LEFT" }) {
     setState({ ...state, [anchor]: open });
   };
 
+  const navLogout = () => {
+    logout();
+  };
+
   const list = (anchor) => (
     <div
       className={clsx(classes.list, {
@@ -63,22 +69,21 @@ export default function SwipeableDrawerLeft({ anchor = "LEFT" }) {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
-      {matches && (
-        <List>
-          <ListItem button>
-            <Menu drawer />
-          </ListItem>
-        </List>
-      )}
       <List>
         {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
+          <StyledListItem button key={text}>
             <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
             </ListItemIcon>
             <ListItemText primary={text} />
-          </ListItem>
+          </StyledListItem>
         ))}
+        <StyledListItem button onClick={navLogout}>
+          <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          <ListItemText primary={"Logout"} />
+        </StyledListItem>
       </List>
     </div>
   );
@@ -98,3 +103,7 @@ export default function SwipeableDrawerLeft({ anchor = "LEFT" }) {
     </React.Fragment>
   );
 }
+
+const StyledListItem = styled(ListItem)`
+  cursor: pointer;
+`;
