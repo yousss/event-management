@@ -67,12 +67,12 @@ const StyledWrapper = styled.div`
   ${(props) => props.theme.breakpoints.down("md")} {
     > div {
       flex-basis: 60%;
-      min-width: 60%;
+      /* min-width: 60%; */
     }
 
     .button {
-      flex-basis: 30%;
-      min-width: 30%;
+      /* flex-basis: 30%; */
+      /* min-width: 30%; */
     }
   }
 
