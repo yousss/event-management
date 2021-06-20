@@ -44,13 +44,13 @@ const StyledWrapper = styled.div`
 
   > div {
     flex-basis: 40%;
-    min-width: 40%;
+    /* min-width: 40%; */
     max-width: 300px;
   }
 
   .button {
     flex-basis: 20%;
-    min-width: 20%;
+    /* min-width: 20%; */
 
     background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
     color: #fff;
