@@ -7,6 +7,7 @@ import { Pagination } from "@material-ui/lab";
 import { useRecoilValue } from "recoil";
 import { dispatchToEventListState } from "store/events";
 import styled from "styled-components";
+import SearchInput from "@components/searchInputField";
 
 const EventList = () => {
   const [open, setOpen] = useState(false);
@@ -87,6 +88,7 @@ const EventList = () => {
   return (
     <EventListStyle>
       <Typography className="event_list_create_btn" component="div">
+        <SearchInput />
         <Button className="button" onClick={() => setOpen(true)}>
           Create Event
         </Button>
@@ -124,6 +126,19 @@ const EventListStyle = styled.div`
   .event_list_create_btn {
     text-align: right;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    ${(props) => props.theme.breakpoints.down("xs")} {
+      > div {
+        flex-basis: 100%;
+        max-width: 100% !important;
+      }
+      .button {
+        margin-top: 10px;
+      }
+    }
   }
 
   .pagination_wrapper {

@@ -9,6 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TablePagination from "@material-ui/core/TablePagination";
 import styled from "styled-components";
+import BtnGroup from "../BntGroup";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -83,16 +84,17 @@ export default function CustomizedTables() {
       >
         <TableHead>
           <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+            <StyledTableCell>Username</StyledTableCell>
+            <StyledTableCell align="center">Type</StyledTableCell>
+            <StyledTableCell align="center">Available</StyledTableCell>
+            <StyledTableCell align="center">Group/Individual</StyledTableCell>
+            <StyledTableCell align="center">Created Date</StyledTableCell>
+            <StyledTableCell align="center">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {rows.map((row, i) => (
+            <StyledTableRow key={i}>
               <StyledTableCell component="th" scope="row">
                 {row.name}
               </StyledTableCell>
@@ -100,6 +102,9 @@ export default function CustomizedTables() {
               <StyledTableCell align="right">{row.fat}</StyledTableCell>
               <StyledTableCell align="right">{row.carbs}</StyledTableCell>
               <StyledTableCell align="right">{row.protein}</StyledTableCell>
+              <StyledTableCell align="right">
+                <BtnGroup />
+              </StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
