@@ -192,6 +192,7 @@ const CreateEventModalStyle = styled(Dialog)`
     button {
       border: 0.7px solid coral;
       margin: 0px 5px;
+      height: 40px;
     }
   }
 

@@ -1,6 +1,6 @@
 import React from "react";
-import { Typography, MenuItem, useTheme } from "@material-ui/core";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import styled from 'styled-components'
+import { Typography, MenuItem } from "@material-ui/core";
 import { useRouter } from "next/router";
 
 const MyMenu = React.memo(({ goToPage, label, selected }) => {
@@ -8,20 +8,20 @@ const MyMenu = React.memo(({ goToPage, label, selected }) => {
 
   return (
     <Typography variant="h6" className="title">
-      <MenuItem
+      <StyledMenuItem
         selected={selected === label}
         onClick={() => {
           goToPage(`${label}`);
         }}
       >
         {capital}
-      </MenuItem>
+      </StyledMenuItem>
     </Typography>
   );
 });
 
 const Menu = ({ drawer }) => {
-  const theme = useTheme();
+
   const router = useRouter();
   const [selected, setSelected] = React.useState("");
 
@@ -42,3 +42,11 @@ const Menu = ({ drawer }) => {
 };
 
 export default React.memo(Menu);
+
+
+const StyledMenuItem = styled(MenuItem) `
+  &&{
+    padding-top:20px;
+  padding-bottom: 20px;
+  }
+`;

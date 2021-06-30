@@ -56,7 +56,7 @@ const StyledWrapper = styled.div`
     color: #fff;
     outline: none;
     font-size: 0.8rem;
-    height: 36px;
+    height: 40px;
 
     &:hover {
       background: linear-gradient(45deg, #ff8e53 30%, #fe6b8b 90%) !important;
@@ -64,19 +64,27 @@ const StyledWrapper = styled.div`
     }
   }
 
+  ${(props) => props.theme.breakpoints.down("xl")} {
+    max-width: 52%;
+  }
+  ${(props) => props.theme.breakpoints.down("lg")} {
+    max-width: 79%;
+  }
   ${(props) => props.theme.breakpoints.down("md")} {
+    max-width: 97%;
     > div {
       flex-basis: 60%;
       /* min-width: 60%; */
     }
 
     .button {
-      /* flex-basis: 30%; */
-      /* min-width: 30%; */
+      flex-basis: 34%;
+     
     }
   }
 
   ${(props) => props.theme.breakpoints.down("xs")} {
+    max-width: 100%;
     > div {
       flex-basis: 100%;
       min-width: 100%;
